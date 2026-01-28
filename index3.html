@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cultura Digital</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    background: black;
+    color: #00ff9c;
+    overflow: hidden;
+}
+
+/* ===== BIENVENIDA ===== */
+#welcome {
+    position: fixed;
+    inset: 0;
+    background: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 10;
+}
+
+#welcome h1 {
+    font-size: 2.3em;
+    animation: glow 1.5s infinite alternate;
+}
+
+#welcome p {
+    margin-top: 20px;
+    animation: blink 1s infinite;
+}
+
+/* ===== CONTENIDO ===== */
+#content {
+    display: none;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.box {
+    border-left: 4px solid #00ff9c;
+    padding-left: 15px;
+    margin: 20px 0;
+}
+
+/* ===== LLUVIA DE NÚMEROS ===== */
+canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+}
+
+/* ===== EFECTO REVENTAR ===== */
+.explode {
+    animation: explode 0.5s;
+}
+
+@keyframes explode {
+    0% { transform: scale(1); filter: blur(0); }
+    50% { transform: scale(1.2); filter: blur(2px); }
+    100% { transform: scale(1); filter: blur(0); }
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px #00ff9c; }
+    to { text-shadow: 0 0 25px #00ff9c; }
+}
+
+@keyframes blink {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+</style>
+</head>
+
+<body ontouchstart="reventar()" onwheel="reventar()">
+
+<canvas id="matrix"></canvas>
+
+<div id="welcome" onclick="entrar()">
+    <h1>¡BIENVENIDO A<br>CULTURA DIGITAL!</h1>
+    <p>Pulsa para continuar</p>
+</div>
+
+<div id="content">
+    <h2>📌 Mapa Mental: Tipos de Mantenimiento</h2>
+
+    <div class="box">
+        <h3>🔧 Preventivo</h3>
+        Limpieza, actualización, revisión periódica.
+    </div>
+
+    <div class="box">
+        <h3>🛠️ Correctivo</h3>
+        Reparación o reemplazo de componentes dañados.
+    </div>
+
+    <div class="box">
+        <h3>⚙️ Predictivo</h3>
+        Análisis para anticipar fallas.
+    </div>
+
+    <div class="box">
+        <h3>📚 Datos</h3>
+        Escuela: Bachillerato Tierra y Libertad<br>
+        Materia: Usa técnicas y estrategias de mantenimiento de equipo de cómputo<br>
+        Semestre: 3°<br>
+        Alumno: Franco Romero Carrera<br>
+        Maestro: Enrique Pacheco Machorro
+    </div>
+</div>
+
+<script>
+// ===== BIENVENIDA =====
+function entrar() {
+    document.getElementById("welcome").style.display = "none";
+    document.getElementById("content").style.display = "block";
+}
+
+// ===== EFECTO REVENTAR =====
+function reventar() {
+    document.body.classList.add("explode");
+    setTimeout(() => {
+        document.body.classList.remove("explode");
+    }, 500);
+}
+
+// ===== MATRIX =====
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const letras = "0123456789";
+const fontSize = 14;
+const columnas = canvas.width / fontSize;
+const drops = Array(Math.floor(columnas)).fill(1);
+
+function draw() {
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillStyle = "#00ff9c";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = letras[Math.floor(Math.random() * letras.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
+            drops[i] = 0;
+        }
+        drops[i]++;
+    }
+}
+
+setInterval(draw, 50);
+
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
+</html>
