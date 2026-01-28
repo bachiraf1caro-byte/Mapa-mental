@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa Mental - Mantenimiento</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Courier New, monospace
+}
+
+body{
+background:black;
+color:#00ff9c;
+overflow:hidden
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:30px
+}
+
+h1,h2{
+text-align:center;
+margin:10px 0
+}
+
+.subtitle{
+text-align:center;
+color:#aaa;
+margin-bottom:25px
+}
+
+.info{
+text-align:center;
+margin-bottom:30px;
+color:#ccc;
+font-size:15px
+}
+
+.card{
+background:rgba(0,0,0,0.85);
+padding:22px;
+margin-bottom:25px;
+border-left:4px solid #00ff9c;
+border-radius:8px
+}
+
+ul{
+margin-left:20px;
+margin-top:10px
+}
+
+footer{
+text-align:center;
+margin-top:40px;
+color:#666
+}
+
+/* GLITCH */
+.glitch{
+animation:glitch 0.5s
+}
+
+@keyframes glitch{
+0%{transform:translate(0)}
+20%{transform:translate(-4px,4px);filter:hue-rotate(90deg)}
+40%{transform:translate(4px,-4px);filter:invert(1)}
+60%{transform:translate(-4px,-4px);filter:hue-rotate(180deg)}
+80%{transform:translate(4px,4px)}
+100%{transform:translate(0);filter:none}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="container" id="content">
+
+<h1>SYSTEM INTERFACE</h1>
+<h2>MANTENIMIENTO DE EQUIPO DE COMPUTO</h2>
+
+<div class="subtitle">STATUS: ONLINE | MODE: ANALISIS</div>
+
+<div class="info">
+<p><b>Alumno:</b> Franco Romero Carrera</p>
+<p><b>Maestro:</b> Enrique Pacheco Machorro</p>
+<p><b>Semestre:</b> 3</p>
+<p><b>Escuela:</b> Bachillerato Tierra y Libertad</p>
+<p><b>Materia:</b> Usa tecnicas y estrategias de mantenimiento de equipo de computo</p>
+</div>
+
+<div class="card">
+<b>QUE ES EL MANTENIMIENTO</b><br><br>
+El mantenimiento es el conjunto de acciones que se realizan para conservar, revisar
+y reparar los equipos de computo, con el objetivo de que funcionen correctamente,
+sean seguros y tengan mayor vida util.
+</div>
+
+<div class="card">
+<b>MANTENIMIENTO PREVENTIVO</b>
+<ul>
+<li>Objetivo: Evitar fallas futuras</li>
+<li>Limpieza interna y externa del equipo</li>
+<li>Revision de cables y conexiones</li>
+<li>Actualizacion de software</li>
+<li>Herramientas: Brochas, aire comprimido, destornilladores</li>
+<li>Ventaja: Reduce fallas y costos</li>
+</ul>
+</div>
+
+<div class="card">
+<b>MANTENIMIENTO CORRECTIVO</b>
+<ul>
+<li>Objetivo: Reparar fallas cuando el equipo deja de funcionar</li>
+<li>Reemplazo de piezas danadas</li>
+<li>Correccion de errores de hardware</li>
+<li>Herramientas: Soldadora, refacciones, pinzas, multimetro</li>
+<li>Desventaja: Puede ser costoso</li>
+</ul>
+</div>
+
+<div class="card">
+<b>MANTENIMIENTO PREDICTIVO</b>
+<ul>
+<li>Objetivo: Detectar fallas antes de que ocurran</li>
+<li>Monitoreo del rendimiento del equipo</li>
+<li>Revision de temperatura y disco duro</li>
+<li>Uso de software de diagnostico</li>
+<li>Ventaja: Alta eficiencia y prevencion</li>
+</ul>
+</div>
+
+<div class="card">
+<b>CONCLUSION</b><br><br>
+El mantenimiento adecuado del equipo de computo permite mejorar su rendimiento,
+proteger la informacion, prevenir fallas y extender su vida util. Aplicar las tecnicas
+correctas garantiza un mejor uso de la tecnologia.
+</div>
+
+<footer>
+Proyecto escolar | Franco Romero Carrera
+</footer>
+
+</div>
+
+<script>
+// MATRIX NUMBERS
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const numbers = "0123456789";
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+const drops = [];
+
+for(let i=0;i<columns;i++) drops[i]=1;
+
+function draw(){
+ctx.fillStyle="rgba(0,0,0,0.05)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="#00ff9c";
+ctx.font=fontSize+"px monospace";
+
+for(let i=0;i<drops.length;i++){
+const text = numbers[Math.floor(Math.random()*numbers.length)];
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
+drops[i]=0;
+
+drops[i]++;
+}
+}
+setInterval(draw,33);
+
+// GLITCH FUNCTION
+function activarGlitch(){
+const content=document.getElementById("content");
+content.classList.add("glitch");
+setTimeout(()=>content.classList.remove("glitch"),500);
+}
+
+// Touch
+document.body.addEventListener("click", activarGlitch);
+
+// Zoom / resize
+window.addEventListener("resize", activarGlitch);
+</script>
+
+</body>
+  </html>
